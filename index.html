@@ -6,16 +6,59 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Aditya Equipments - Indent Calculator</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     body { font-family: 'Inter', sans-serif; }
+    
+    @media print {
+      body, html, #root {
+        height: auto !important;
+        overflow: visible !important;
+        background: white !important;
+      }
+      .print-hidden {
+        display: none !important;
+      }
+      main {
+        display: block !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+      .lg\:col-span-8 {
+        width: 100% !important;
+      }
+      .shadow-2xl, .shadow-xl {
+        box-shadow: none !important;
+      }
+      .rounded-\[3rem\], .rounded-\[2rem\] {
+        border-radius: 0 !important;
+      }
+      .bg-slate-950 {
+        background-color: #020617 !important;
+        -webkit-print-color-adjust: exact;
+      }
+      .bg-slate-50 {
+        background-color: #f8fafc !important;
+        -webkit-print-color-adjust: exact;
+      }
+      table {
+        page-break-inside: auto;
+      }
+      tr {
+        page-break-inside: avoid;
+        page-break-after: auto;
+      }
+    }
   </style>
 <script type="importmap">
 {
   "imports": {
     "react": "https://esm.sh/react@^19.2.3",
     "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
-    "react/": "https://esm.sh/react@^19.2.3/"
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "xlsx": "https://esm.sh/xlsx@0.18.5",
+    "jspdf": "https://esm.sh/jspdf@2.5.1",
+    "html2canvas": "https://esm.sh/html2canvas@1.4.1"
   }
 }
 </script>

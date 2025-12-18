@@ -13,6 +13,7 @@ export interface MaterialRequirement {
   quantity: number;
   unit: string;
   totalWeightKg: number;
+  isAccessory?: boolean; // Flag to distinguish bought-out items
 }
 
 export interface CalculationResult {
