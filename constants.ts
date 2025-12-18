@@ -1,16 +1,18 @@
 
 import { AngleData } from './types';
 
-// Based on the first CSV file provided
+// Based on Aditya's master weight table with added 6mm options
 export const ANGLE_WEIGHT_TABLE: AngleData[] = [
   { size: "20 x 20", thickness: 3, weightPerMeter: 0.9 },
   { size: "20 x 20", thickness: 4, weightPerMeter: 1.1 },
   { size: "25 x 25", thickness: 3, weightPerMeter: 1.1 },
   { size: "25 x 25", thickness: 4, weightPerMeter: 1.4 },
   { size: "25 x 25", thickness: 5, weightPerMeter: 1.8 },
+  { size: "25 x 25", thickness: 6, weightPerMeter: 2.1 },
   { size: "30 x 30", thickness: 3, weightPerMeter: 1.4 },
   { size: "30 x 30", thickness: 4, weightPerMeter: 1.8 },
   { size: "30 x 30", thickness: 5, weightPerMeter: 2.2 },
+  { size: "30 x 30", thickness: 6, weightPerMeter: 2.6 },
   { size: "35 x 35", thickness: 3, weightPerMeter: 1.6 },
   { size: "35 x 35", thickness: 4, weightPerMeter: 2.1 },
   { size: "35 x 35", thickness: 5, weightPerMeter: 2.6 },
@@ -30,20 +32,26 @@ export const ANGLE_WEIGHT_TABLE: AngleData[] = [
 ];
 
 export const PIPE_WEIGHTS = {
-  OD48: 3.3, // kg per meter (from CSV 2: 3m = 9.9kg)
-  OD60: 3.87 // kg per meter (derived from Prop CSV 3: 2.5m = 9.68kg)
+  OD48_32: 3.56,
+  OD48_29: 3.25,
+  OD60_32: 4.48, // 3.2mm for Prop Outer
+  OD60_35: 4.88  // 3.5mm for 2" Coil Pipe
 };
 
-export const ROD_WEIGHTS = {
-  "28mm": 1.2, // Derived: 1.8m/pcs? (CSV 5 says size 18, wt 2.16kg)
-  "30mm": 1.41, // Derived: CSV 5 says size 18, wt 2.538kg
-  "32mm": 1.61  // Derived: CSV 5 says size 18, wt 2.898kg
+export const ROD_WEIGHTS_METER = {
+  "10mm": 0.617,
+  "28mm": 4.83, 
+  "30mm": 5.55, 
+  "32mm": 6.31  
 };
 
 export const COMPONENT_WEIGHTS = {
-  TOP_CUP: 0.36,    // 360 grams
-  BOTTOM_CUP: 0.18, // 180 grams
-  LEDGER_BLADE: 0.2,
-  PROP_NUT: 1.0,
-  JACK_NUT: 0.18
+  TOP_CUP: 0.365, 
+  BOTTOM_CUP: 0.18,
+  LEDGER_BLADE: 0.175, 
+  PROP_NUT: 0.55, // Updated from 1kg to 550g as per latest request
+  CUP_NUT: 0.18,
+  JACK_FLAT_BASE: 1.0, // 1 kg for Base Plate/U-Head/Angle
+  PROP_COIL_LEN: 0.3,   // 300mm Coil Pipe
+  PROP_HANDLE_LEN: 0.5  // 500mm for 10mm round handle
 };

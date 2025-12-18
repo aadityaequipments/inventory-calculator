@@ -1,6 +1,7 @@
 
 export enum ProductType {
-  SPAN_PLATE = 'Span / Plate',
+  SPAN = 'Telescopic Span',
+  PLATE = 'Centering Plate',
   CUPLOCK = 'Cuplock (Vertical/Ledger)',
   PROP = 'Adjustable Prop',
   JACK = 'Base / U-Jack'
