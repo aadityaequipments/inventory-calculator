@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo } from 'react';
 import * as XLSX from 'xlsx';
 import { jsPDF } from 'jspdf';
@@ -154,363 +153,217 @@ const App: React.FC = () => {
     pdf.save(`Aditya_Indent_${selectedProduct.split(' ')[0]}.pdf`);
   };
 
-  const exportToWord = () => {
-    let content = `
-      <div style="font-family: Arial; padding: 20px;">
-        <h1 style="color: #020617; text-align: center;">ADITYA EQUIPMENTS</h1>
-        <h2 style="text-align: center;">PRODUCTION INDENT: ${calculationResult.productName}</h2>
-        <p><strong>Batch Quantity:</strong> ${calculationResult.quantity} PCS</p>
-        <p><strong>Total Weight:</strong> ${totalWeight.toFixed(2)} KG</p>
-        <h3>RAW MATERIALS</h3>
-        <table border="1" style="width: 100%; border-collapse: collapse;">
-          <tr style="background: #f1f5f9;"><th>Item</th><th>Spec</th><th>Weight (KG)</th></tr>
-          ${rawMaterials.map(m => `<tr><td>${m.item}</td><td>${m.specification}</td><td align="right">${m.totalWeightKg.toFixed(2)}</td></tr>`).join('')}
-        </table>
-        <h3>ACCESSORIES</h3>
-        <table border="1" style="width: 100%; border-collapse: collapse;">
-          <tr style="background: #f1f5f9;"><th>Item</th><th>Spec</th><th>Qty (NOS)</th></tr>
-          ${accessories.map(a => `<tr><td>${a.item}</td><td>${a.specification}</td><td align="right">${a.quantity}</td></tr>`).join('')}
-        </table>
-      </div>
-    `;
-    const blob = new Blob(['\ufeff', content], { type: 'application/msword' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `Aditya_Indent_${selectedProduct.split(' ')[0]}.doc`;
-    link.click();
-  };
-
   return (
-    <div className="min-h-screen pb-12 bg-[#F8FAFC] font-sans text-slate-900">
-      <header className="bg-slate-950 text-white shadow-2xl sticky top-0 z-50 border-b border-blue-500/40 print-hidden">
-        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <div className="w-14 h-14 bg-gradient-to-tr from-blue-600 to-blue-400 rounded-2xl flex items-center justify-center font-black text-3xl shadow-xl shadow-blue-500/20 rotate-3">A</div>
+    <div className="min-h-screen pb-12 bg-[#F1F5F9] font-sans text-slate-900">
+      {/* PROFESSIONAL HEADER */}
+      <header className="bg-slate-950 text-white shadow-2xl sticky top-0 z-50 print-hidden">
+        <div className="max-w-7xl mx-auto px-6 h-24 flex items-center justify-between">
+          <div className="flex items-center space-x-6">
+            <div className="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center font-black text-4xl shadow-2xl shadow-blue-500/40">A</div>
             <div>
-              <h1 className="text-2xl font-black leading-none tracking-tight uppercase">ADITYA EQUIPMENTS</h1>
-              <div className="flex items-center gap-2 mt-1.5">
-                 <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                 <p className="text-[10px] text-blue-300 uppercase tracking-[0.3em] font-black italic">Manufacturing Indent Portal</p>
-              </div>
+              <h1 className="text-3xl font-black uppercase tracking-tight">ADITYA EQUIPMENTS</h1>
+              <p className="text-blue-400 text-xs font-black uppercase tracking-[0.4em] italic">Manufacturing Excellence</p>
             </div>
           </div>
           
-          <div className="flex items-center gap-3">
-            <button onClick={exportToExcel} className="p-2.5 bg-green-600 hover:bg-green-500 rounded-xl transition-all shadow-lg flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider">
-               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M14.5,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V7.5L14.5,2M10,19L7,19L10,15L7,11L10,11L11.5,13L13,11L16,11L13,15L16,19L13,19L11.5,17L10,19Z"/></svg>
-               Excel
+          <div className="flex items-center gap-4">
+            <button 
+              onClick={exportToExcel} 
+              className="px-8 py-4 bg-emerald-600 hover:bg-emerald-500 text-white rounded-2xl transition-all shadow-xl flex items-center gap-3 text-sm font-black uppercase tracking-widest border-b-4 border-emerald-800 active:border-b-0 active:translate-y-1"
+            >
+               <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M14.5,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V7.5L14.5,2M10,19L7,19L10,15L7,11L10,11L11.5,13L13,11L16,11L13,15L16,19L13,19L11.5,17L10,19Z"/></svg>
+               Download Excel
             </button>
-            <button onClick={exportToPDF} className="p-2.5 bg-red-600 hover:bg-red-500 rounded-xl transition-all shadow-lg flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider">
-               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19,3H5C3.89,3 3,3.89 3,5V19C3,20.11 3.89,21 5,21H19C20.11,21 21,20.11 21,19V5C21,3.89 20.11,3 19,3M19,19H5V5H19V19M11,17H13V15H15V13H13V11H11V13H9V15H11V17Z"/></svg>
-               PDF
-            </button>
-            <button onClick={exportToWord} className="p-2.5 bg-blue-600 hover:bg-blue-500 rounded-xl transition-all shadow-lg flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider">
-               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M15.2,20H13.8L12,13.2L10.2,20H8.8L6.6,11H8.1L9.5,17.8L11.3,11H12.7L14.5,17.8L15.9,11H17.4L15.2,20Z"/></svg>
-               Word
-            </button>
-            <button onClick={() => window.print()} className="px-5 py-2.5 bg-slate-100 hover:bg-white text-slate-900 text-[11px] font-black uppercase tracking-widest rounded-xl transition-all shadow-lg flex items-center gap-2 border border-slate-700">
-               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg>
-               Print
+            <button 
+              onClick={exportToPDF} 
+              className="px-8 py-4 bg-rose-600 hover:bg-rose-500 text-white rounded-2xl transition-all shadow-xl flex items-center gap-3 text-sm font-black uppercase tracking-widest border-b-4 border-rose-800 active:border-b-0 active:translate-y-1"
+            >
+               <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19,3H5C3.89,3 3,3.89 3,5V19C3,20.11 3.89,21 5,21H19C20.11,21 21,20.11 21,19V5C21,3.89 20.11,3 19,3M19,19H5V5H19V19M11,17H13V15H15V13H13V11H11V13H9V15H11V17Z"/></svg>
+               Download PDF
             </button>
           </div>
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-6 py-10 grid grid-cols-1 lg:grid-cols-12 gap-10">
-        <div className="lg:col-span-4 space-y-8 print-hidden">
-          <section className="bg-white rounded-[2rem] shadow-xl border border-slate-200 overflow-hidden">
-            <div className="p-6 bg-slate-50 border-b border-slate-100">
-              <h2 className="font-black text-slate-900 text-[11px] uppercase tracking-widest">01. Material Selection</h2>
-            </div>
-            <div className="p-4 space-y-2">
-              {Object.values(ProductType).map((type) => (
-                <button
-                  key={type}
-                  onClick={() => setSelectedProduct(type)}
-                  className={`w-full text-left px-6 py-4 rounded-2xl border-2 transition-all duration-300 relative group ${
-                    selectedProduct === type ? 'bg-slate-950 border-slate-950 text-white shadow-xl' : 'border-slate-50 hover:border-slate-200 bg-white text-slate-500'
-                  }`}
-                >
-                  <span className="text-sm font-black uppercase tracking-tight">{type}</span>
-                </button>
-              ))}
-            </div>
-          </section>
-
-          <section className="bg-white rounded-[2rem] shadow-xl border border-slate-200 overflow-hidden">
-            <div className="p-6 bg-slate-50 border-b border-slate-100">
-              <h2 className="font-black text-slate-900 text-[11px] uppercase tracking-widest">02. Dimension & Specs</h2>
-            </div>
-            <div className="p-8 space-y-8">
-              <div>
-                <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Production Quantity</label>
-                <div className="relative">
-                   <input type="number" value={qty} onChange={(e) => setQty(Number(e.target.value))} className="w-full pl-6 pr-16 py-4 border-2 border-slate-100 rounded-2xl focus:border-blue-500 bg-slate-50 outline-none font-black text-2xl" />
-                   <span className="absolute right-6 top-1/2 -translate-y-1/2 text-slate-400 text-xs font-black uppercase">Units</span>
+      <main className="max-w-7xl mx-auto px-6 py-12">
+        {/* BIG STEP 1: PRODUCT CARDS */}
+        <section className="mb-12 print-hidden">
+          <div className="flex items-center gap-4 mb-8">
+            <span className="w-10 h-10 bg-slate-950 text-white rounded-full flex items-center justify-center font-black">1</span>
+            <h2 className="text-2xl font-black uppercase tracking-tight">Select What You are Manufacturing</h2>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+            {Object.values(ProductType).map((type) => (
+              <button
+                key={type}
+                onClick={() => setSelectedProduct(type)}
+                className={`p-6 rounded-3xl border-4 transition-all flex flex-col items-center text-center gap-4 group ${
+                  selectedProduct === type 
+                    ? 'bg-white border-blue-600 shadow-2xl scale-105' 
+                    : 'bg-white/50 border-transparent hover:border-slate-300 text-slate-500'
+                }`}
+              >
+                <div className={`w-16 h-16 rounded-2xl flex items-center justify-center transition-colors ${selectedProduct === type ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-400 group-hover:bg-slate-300'}`}>
+                  {type === ProductType.PLATE && '⬛'}
+                  {type === ProductType.SPAN && '↔️'}
+                  {type === ProductType.CUPLOCK && '🏗️'}
+                  {type === ProductType.PROP && '🗼'}
+                  {type === ProductType.JACK && '🔩'}
                 </div>
-              </div>
+                <span className={`text-[11px] font-black uppercase tracking-widest leading-tight ${selectedProduct === type ? 'text-slate-950' : ''}`}>{type}</span>
+              </button>
+            ))}
+          </div>
+        </section>
 
-              <div className="space-y-6 pt-4 border-t border-slate-100">
-                {selectedProduct === ProductType.CUPLOCK && (
-                  <div className="space-y-6">
-                    <div className="space-y-4">
-                      <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Item Category</label>
-                      <div className="flex bg-slate-100 p-1.5 rounded-xl">
-                        <button onClick={() => setCupType('Vertical')} className={`flex-1 py-3 text-[10px] font-black rounded-lg ${cupType === 'Vertical' ? 'bg-slate-950 text-white shadow-md' : 'text-slate-500'}`}>VERTICAL</button>
-                        <button onClick={() => setCupType('Ledger')} className={`flex-1 py-3 text-[10px] font-black rounded-lg ${cupType === 'Ledger' ? 'bg-slate-950 text-white shadow-md' : 'text-slate-500'}`}>LEDGER (LASER)</button>
-                      </div>
-                    </div>
-                    <div className="space-y-4">
-                      <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Custom Size (Meters)</label>
-                      <div className="relative">
-                         <input type="number" step="0.001" value={cupLen} onChange={(e) => setCupLen(Number(e.target.value))} className="w-full pl-6 pr-12 py-4 bg-slate-50 border-2 border-slate-100 rounded-2xl text-xl font-black outline-none focus:border-blue-500" />
-                        <span className="absolute right-6 top-1/2 -translate-y-1/2 text-slate-400 text-xs font-black uppercase">MTR</span>
-                      </div>
-                    </div>
-                    <div className="space-y-4">
-                      <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Pipe Thickness</label>
-                      <div className="flex bg-slate-100 p-1.5 rounded-xl">
-                        <button onClick={() => setCupThk(2.9)} className={`flex-1 py-2 text-[10px] font-black rounded-lg ${cupThk === 2.9 ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500'}`}>2.9MM</button>
-                        <button onClick={() => setCupThk(3.2)} className={`flex-1 py-2 text-[10px] font-black rounded-lg ${cupThk === 3.2 ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500'}`}>3.2MM</button>
-                      </div>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+          {/* STEP 2: DETAILS */}
+          <div className="lg:col-span-4 space-y-8 print-hidden">
+             <section className="bg-white rounded-[2.5rem] shadow-xl border border-slate-200 overflow-hidden">
+                <div className="p-8 bg-slate-50 border-b border-slate-100 flex items-center gap-4">
+                  <span className="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-black text-sm">2</span>
+                  <h2 className="font-black text-slate-900 text-xs uppercase tracking-widest">Specifications</h2>
+                </div>
+                <div className="p-10 space-y-8">
+                  <div>
+                    <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Production Quantity</label>
+                    <div className="relative">
+                       <input type="number" value={qty} onChange={(e) => setQty(Number(e.target.value))} className="w-full pl-8 pr-20 py-5 border-4 border-slate-100 rounded-2xl focus:border-blue-500 bg-slate-50 outline-none font-black text-3xl transition-all" />
+                       <span className="absolute right-8 top-1/2 -translate-y-1/2 text-slate-400 text-xs font-black uppercase tracking-widest">PCS</span>
                     </div>
                   </div>
-                )}
 
-                {selectedProduct === ProductType.PLATE && (
-                  <div className="space-y-6">
-                    <div className="space-y-4">
-                      <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Framing Type</label>
-                      <div className="grid grid-cols-1 gap-3">
-                        {(['2L3S', '2L4S', '3L2S'] as PlateFramingType[]).map((type) => (
-                          <button key={type} onClick={() => setPlateType(type)} className={`flex items-center gap-4 p-4 rounded-2xl border-2 transition-all ${plateType === type ? 'border-blue-500 bg-blue-50 shadow-sm' : 'border-slate-100 bg-white'}`}>
-                            <div className="w-16 h-12 bg-white border border-slate-300 relative rounded overflow-hidden">
-                               <div className="absolute inset-0 border-2 border-slate-400"></div>
-                               {type === '2L3S' && <div className="absolute left-1/2 top-0 bottom-0 w-[1px] bg-slate-400 -translate-x-1/2"></div>}
-                               {type === '2L4S' && <><div className="absolute left-1/3 top-0 bottom-0 w-[1px] bg-slate-400"></div><div className="absolute left-2/3 top-0 bottom-0 w-[1px] bg-slate-400"></div></>}
-                               {type === '3L2S' && <div className="absolute top-1/2 left-0 right-0 h-[1px] bg-slate-400 -translate-y-1/2"></div>}
+                  {/* DYNAMIC FORM SECTION */}
+                  <div className="pt-8 border-t border-slate-100 space-y-8">
+                    {selectedProduct === ProductType.PLATE && (
+                      <div className="space-y-6">
+                        <div className="flex bg-slate-100 p-2 rounded-2xl">
+                          <button onClick={() => setDimensionUnit('mm')} className={`flex-1 py-3 text-[10px] font-black rounded-xl transition-all ${dimensionUnit === 'mm' ? 'bg-slate-950 text-white shadow-lg' : 'text-slate-400'}`}>MM</button>
+                          <button onClick={() => setDimensionUnit('feet')} className={`flex-1 py-3 text-[10px] font-black rounded-xl transition-all ${dimensionUnit === 'feet' ? 'bg-slate-950 text-white shadow-lg' : 'text-slate-400'}`}>FEET</button>
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <label className="text-[10px] font-black text-slate-400 uppercase">Length</label>
+                            <input type="number" step="any" value={plateL} onChange={(e) => setPlateL(Number(e.target.value))} className="w-full px-5 py-4 bg-slate-50 border-2 border-slate-100 rounded-xl text-lg font-black outline-none focus:border-blue-500" />
+                          </div>
+                          <div className="space-y-2">
+                            <label className="text-[10px] font-black text-slate-400 uppercase">Width</label>
+                            <input type="number" step="any" value={plateB} onChange={(e) => setPlateB(Number(e.target.value))} className="w-full px-5 py-4 bg-slate-50 border-2 border-slate-100 rounded-xl text-lg font-black outline-none focus:border-blue-500" />
+                          </div>
+                        </div>
+                        <div className="space-y-2">
+                            <label className="text-[10px] font-black text-slate-400 uppercase">Angle Size</label>
+                            <select value={plateAngleSize} onChange={(e) => setPlateAngleSize(e.target.value)} className="w-full px-5 py-4 bg-slate-50 border-2 border-slate-100 rounded-xl text-sm font-black outline-none cursor-pointer">
+                              {Array.from(new Set(ANGLE_WEIGHT_TABLE.map(a => a.size))).map(s => <option key={s} value={s}>{s}</option>)}
+                            </select>
+                        </div>
+                        <div className="space-y-3">
+                            <label className="text-[10px] font-black text-slate-400 uppercase">Angle Thickness</label>
+                            <div className="grid grid-cols-3 gap-2">
+                              {availablePlateAngleThks.map(t => (
+                                <button key={t} onClick={() => setPlateAngleThk(t)} className={`py-3 rounded-xl border-2 text-[10px] font-black transition-all ${plateAngleThk === t ? 'bg-blue-600 text-white border-blue-600 shadow-lg' : 'bg-white text-slate-400 border-slate-100 hover:border-slate-300'}`}>{t}mm</button>
+                              ))}
                             </div>
-                            <div className="text-left">
-                              <p className="text-[11px] font-black uppercase">{type === '2L3S' ? 'TYPE A' : type === '2L4S' ? 'TYPE B' : 'TYPE C'}</p>
-                              <p className="text-[9px] text-slate-400 uppercase font-bold tracking-tight">{type === '2L3S' ? '2L + 3S' : type === '2L4S' ? '2L + 4S' : '3L + 2S'}</p>
-                            </div>
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                    <div className="flex bg-slate-100 p-1.5 rounded-xl mb-4">
-                      <button onClick={() => setDimensionUnit('mm')} className={`flex-1 py-2 text-[10px] font-black rounded-lg ${dimensionUnit === 'mm' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500'}`}>MM</button>
-                      <button onClick={() => setDimensionUnit('feet')} className={`flex-1 py-2 text-[10px] font-black rounded-lg ${dimensionUnit === 'feet' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500'}`}>FEET</button>
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="space-y-1">
-                        <label className="text-[9px] font-black text-slate-400 uppercase">Length</label>
-                        <input type="number" step="any" value={plateL} onChange={(e) => setPlateL(Number(e.target.value))} className="w-full px-4 py-3 bg-slate-50 border-2 border-slate-100 rounded-xl text-xs font-black outline-none focus:border-blue-500" />
-                      </div>
-                      <div className="space-y-1">
-                        <label className="text-[9px] font-black text-slate-400 uppercase">Width</label>
-                        <input type="number" step="any" value={plateB} onChange={(e) => setPlateB(Number(e.target.value))} className="w-full px-4 py-3 bg-slate-50 border-2 border-slate-100 rounded-xl text-xs font-black outline-none focus:border-blue-500" />
-                      </div>
-                    </div>
-                    <div className="space-y-4">
-                      <div className="space-y-1">
-                        <label className="text-[9px] font-black text-slate-400 uppercase">Angle Size</label>
-                        <select value={plateAngleSize} onChange={(e) => setPlateAngleSize(e.target.value)} className="w-full px-4 py-3 bg-slate-50 border-2 border-slate-100 rounded-xl text-xs font-black outline-none">
-                          {Array.from(new Set(ANGLE_WEIGHT_TABLE.map(a => a.size))).map(s => <option key={s} value={s}>{s}</option>)}
-                        </select>
-                      </div>
-                      <div className="space-y-2">
-                        <label className="text-[9px] font-black text-slate-400 uppercase">Angle Thickness</label>
-                        <div className="grid grid-cols-3 gap-2">
-                          {availablePlateAngleThks.map(t => (
-                            <button key={t} onClick={() => setPlateAngleThk(t)} className={`py-2 rounded-lg border-2 text-[10px] font-black ${plateAngleThk === t ? 'bg-slate-950 text-white border-slate-950' : 'bg-white text-slate-400 border-slate-100 hover:border-slate-300'}`}>{t}mm</button>
-                          ))}
                         </div>
                       </div>
-                      <div className="space-y-1">
-                        <label className="text-[9px] font-black text-slate-400 uppercase">Sheet Gauge (mm)</label>
-                        <input type="number" step="0.1" value={plateSheetThk} onChange={(e) => setPlateSheetThk(Number(e.target.value))} className="w-full px-4 py-3 bg-slate-50 border-2 border-slate-100 rounded-xl text-xs font-black outline-none focus:border-blue-500" />
-                      </div>
-                    </div>
-                  </div>
-                )}
+                    )}
 
-                {selectedProduct === ProductType.PROP && (
-                  <div className="space-y-6">
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="space-y-1">
-                        <label className="text-[9px] font-black text-slate-400 uppercase">Outer Pipe (M)</label>
-                        <input type="number" step="0.1" value={propOuterLen} onChange={(e) => setPropOuterLen(Number(e.target.value))} className="w-full px-4 py-3 bg-slate-50 border-2 border-slate-100 rounded-xl text-xs font-black outline-none focus:border-blue-500" />
+                    {selectedProduct === ProductType.CUPLOCK && (
+                      <div className="space-y-8">
+                         <div className="grid grid-cols-1 gap-3">
+                            {['Vertical', 'Ledger'].map(t => (
+                              <button key={t} onClick={() => setCupType(t as any)} className={`w-full py-5 rounded-2xl border-4 text-sm font-black uppercase tracking-widest transition-all ${cupType === t ? 'bg-slate-950 text-white border-slate-950 shadow-xl' : 'bg-white border-slate-100 text-slate-400 hover:border-slate-300'}`}>{t}</button>
+                            ))}
+                         </div>
+                         <div>
+                            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-3">Length (Meters)</label>
+                            <input type="number" step="0.01" value={cupLen} onChange={(e) => setCupLen(Number(e.target.value))} className="w-full px-6 py-5 bg-slate-50 border-2 border-slate-100 rounded-2xl text-2xl font-black outline-none focus:border-blue-500" />
+                         </div>
                       </div>
-                      <div className="space-y-1">
-                        <label className="text-[9px] font-black text-slate-400 uppercase">Inner Pipe (M)</label>
-                        <input type="number" step="0.1" value={propInnerLen} onChange={(e) => setPropInnerLen(Number(e.target.value))} className="w-full px-4 py-3 bg-slate-50 border-2 border-slate-100 rounded-xl text-xs font-black outline-none focus:border-blue-500" />
-                      </div>
-                    </div>
-                    <div className="space-y-4">
-                      <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Top Attachment</label>
-                      <div className="grid grid-cols-3 gap-2">
-                        {(['Plate', 'U-Head', 'L-Angle'] as PropTopType[]).map(type => (
-                          <button key={type} onClick={() => setPropTopType(type)} className={`py-3 rounded-xl border-2 text-[9px] font-black uppercase ${propTopType === type ? 'bg-slate-950 text-white border-slate-950 shadow-sm' : 'bg-white border-slate-100 text-slate-400 hover:border-slate-300'}`}>{type}</button>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                )}
+                    )}
 
-                {selectedProduct === ProductType.JACK && (
-                  <div className="space-y-6">
-                    <div className="space-y-4">
-                      <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Jack Type</label>
-                      <div className="flex bg-slate-100 p-1.5 rounded-xl">
-                        <button onClick={() => setJackType('Base Jack')} className={`flex-1 py-3 text-[10px] font-black rounded-lg ${jackType === 'Base Jack' ? 'bg-slate-950 text-white shadow-md' : 'text-slate-500'}`}>BASE JACK</button>
-                        <button onClick={() => setJackType('U-Jack')} className={`flex-1 py-3 text-[10px] font-black rounded-lg ${jackType === 'U-Jack' ? 'bg-slate-950 text-white shadow-md' : 'text-slate-500'}`}>U-JACK</button>
-                      </div>
-                    </div>
-                    <div className="space-y-4">
-                      <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Rod Specifications</label>
-                      <div className="grid grid-cols-3 gap-2">
-                        {["28mm", "30mm", "32mm"].map(size => (
-                          <button key={size} onClick={() => setJackRodSize(size)} className={`py-3 rounded-xl border-2 text-[10px] font-black ${jackRodSize === size ? 'bg-blue-600 border-blue-600 text-white' : 'bg-white text-slate-400 border-slate-100 hover:border-slate-300'}`}>{size}</button>
-                        ))}
-                      </div>
-                    </div>
-                    <div className="space-y-4">
-                      <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Custom Rod Length</label>
-                      <div className="relative">
-                        <input type="number" value={jackRodLen} onChange={(e) => setJackRodLen(Number(e.target.value))} className="w-full pl-6 pr-12 py-4 bg-slate-50 border-2 border-slate-100 rounded-2xl text-xl font-black outline-none focus:border-blue-500" />
-                        <span className="absolute right-6 top-1/2 -translate-y-1/2 text-slate-400 text-xs font-black uppercase">INCH</span>
-                      </div>
-                    </div>
-                  </div>
-                )}
+                    {selectedProduct === ProductType.PROP && (
+                       <div className="space-y-8">
+                          <div className="space-y-2">
+                            <label className="text-[10px] font-black text-slate-400 uppercase">Outer Pipe Length (M)</label>
+                            <input type="number" step="0.1" value={propOuterLen} onChange={(e) => setPropOuterLen(Number(e.target.value))} className="w-full px-6 py-4 bg-slate-50 border-2 border-slate-100 rounded-xl text-xl font-black outline-none" />
+                          </div>
+                          <div className="space-y-2">
+                            <label className="text-[10px] font-black text-slate-400 uppercase">Inner Pipe Length (M)</label>
+                            <input type="number" step="0.1" value={propInnerLen} onChange={(e) => setPropInnerLen(Number(e.target.value))} className="w-full px-6 py-4 bg-slate-50 border-2 border-slate-100 rounded-xl text-xl font-black outline-none" />
+                          </div>
+                       </div>
+                    )}
 
-                {selectedProduct === ProductType.SPAN && (
-                  <div className="space-y-6">
-                    <p className="text-[11px] font-bold text-slate-500 uppercase leading-relaxed italic border-l-4 border-blue-500 pl-4 bg-blue-50 p-4 rounded-xl">
-                      Standard Span Indent: Master formulas verified for S1 to S4 series.
-                    </p>
-                    <div className="p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl">
-                       <p className="text-[10px] font-black text-slate-800 uppercase tracking-widest mb-2">Master Specs:</p>
-                       <ul className="space-y-2">
-                         <li className="text-[10px] text-slate-500 flex justify-between"><span>HR Body Sheet:</span> <span>15.34 KG</span></li>
-                         <li className="text-[10px] text-slate-500 flex justify-between"><span>MS Round Lattice:</span> <span>8.40 KG</span></li>
-                         <li className="text-[10px] text-slate-500 flex justify-between"><span>T-Angle member:</span> <span>7.75 KG</span></li>
-                       </ul>
-                    </div>
+                    {selectedProduct === ProductType.JACK && (
+                       <div className="space-y-8">
+                          <div className="grid grid-cols-2 gap-3">
+                            {['Base Jack', 'U-Jack'].map(t => (
+                              <button key={t} onClick={() => setJackType(t as any)} className={`w-full py-4 rounded-xl border-4 text-xs font-black uppercase transition-all ${jackType === t ? 'bg-slate-950 text-white border-slate-950 shadow-xl' : 'bg-white border-slate-100 text-slate-400'}`}>{t}</button>
+                            ))}
+                          </div>
+                          <div className="space-y-2">
+                            <label className="text-[10px] font-black text-slate-400 uppercase">Rod Length (Inches)</label>
+                            <input type="number" value={jackRodLen} onChange={(e) => setJackRodLen(Number(e.target.value))} className="w-full px-6 py-4 bg-slate-50 border-2 border-slate-100 rounded-xl text-2xl font-black outline-none" />
+                          </div>
+                       </div>
+                    )}
                   </div>
-                )}
-              </div>
-            </div>
-          </section>
-        </div>
+                </div>
+             </section>
+          </div>
 
-        {/* Indent Display Card */}
-        <div className="lg:col-span-8 flex flex-col items-stretch">
-           <div id="indent-card" className="bg-white rounded-[3rem] shadow-2xl border border-slate-200/50 flex flex-col flex-grow overflow-hidden">
-              <div className="p-10 border-b border-slate-100 bg-slate-50/30 flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
-                <div>
-                   <span className="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-[9px] font-black uppercase tracking-widest rounded-full mb-3 border border-blue-200">Production Ready Indent</span>
-                   <h3 className="text-4xl font-black text-slate-950 tracking-tighter leading-none mb-2 uppercase">
-                    {selectedProduct === ProductType.CUPLOCK ? `CUPLOCK ${cupType.toUpperCase()}` : selectedProduct === ProductType.JACK ? jackType.toUpperCase() : calculationResult.productName}
-                   </h3>
-                   <div className="space-y-1.5">
-                    <p className="text-slate-500 text-[10px] font-black uppercase tracking-[0.2em]">Batch: <span className="text-slate-950 underline underline-offset-4 decoration-blue-500 decoration-2">{calculationResult.quantity.toLocaleString()} UNITS</span></p>
-                    <div className="flex flex-wrap gap-2 pt-1">
-                      {selectedProduct === ProductType.CUPLOCK && <span className="text-[9px] font-black text-blue-600 bg-blue-50 px-2 py-1 rounded border border-blue-100 uppercase italic tracking-widest">{cupLen}M Length | {cupThk}mm Pipe</span>}
-                      {selectedProduct === ProductType.JACK && <span className="text-[9px] font-black text-blue-600 bg-blue-50 px-2 py-1 rounded border border-blue-100 uppercase italic tracking-widest">{jackRodLen}" Rod | {jackRodSize} Dia | 1.0kg Plate</span>}
-                      {selectedProduct === ProductType.PLATE && <span className="text-[9px] font-black text-blue-600 bg-blue-50 px-2 py-1 rounded border border-blue-100 uppercase italic tracking-widest">{plateL}x{plateB}{dimensionUnit} | {plateAngleSize}x{plateAngleThk}mm</span>}
-                    </div>
+          {/* THE INDENT CARD */}
+          <div className="lg:col-span-8">
+             <div id="indent-card" className="bg-white rounded-[3rem] shadow-2xl border border-slate-200 overflow-hidden flex flex-col">
+                <div className="p-12 bg-slate-50 border-b border-slate-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-10">
+                   <div>
+                      <span className="inline-block px-4 py-1.5 bg-blue-100 text-blue-700 text-[10px] font-black uppercase tracking-widest rounded-full mb-4 border border-blue-200">Official Production Indent</span>
+                      <h3 className="text-5xl font-black text-slate-950 tracking-tighter uppercase mb-2">{calculationResult.productName}</h3>
+                      <p className="text-slate-500 font-black text-xs uppercase tracking-[0.3em]">Batch Order: <span className="text-blue-600">{calculationResult.quantity.toLocaleString()} PCS</span></p>
+                   </div>
+                   <div className="bg-slate-950 p-10 rounded-[2.5rem] min-w-[340px] text-right shadow-2xl shadow-slate-950/30 border border-slate-800">
+                      <p className="text-[10px] font-black text-slate-500 uppercase tracking-[0.4em] mb-3">Total Estimated Weight</p>
+                      <div className="flex items-baseline justify-end gap-3">
+                        <span className="text-7xl font-black text-white tabular-nums tracking-tighter">{totalWeight.toLocaleString(undefined, { maximumFractionDigits: 1 })}</span>
+                        <span className="text-2xl font-black text-blue-500 italic uppercase">KG</span>
+                      </div>
                    </div>
                 </div>
-                <div className="bg-slate-950 p-8 rounded-[2.5rem] text-right min-w-[300px] shadow-2xl shadow-slate-950/20 border border-slate-800">
-                  <p className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] mb-2">Total Indent Weight</p>
-                  <div className="flex items-baseline justify-end gap-2">
-                    <span className="text-6xl font-black text-white tabular-nums tracking-tighter">{totalWeight.toLocaleString(undefined, { maximumFractionDigits: 1 })}</span>
-                    <span className="text-2xl font-black text-blue-500 italic uppercase">KG</span>
-                  </div>
-                </div>
-              </div>
 
-              <div className="flex-grow">
-                <div className="px-10 py-6 bg-slate-50 border-b border-slate-100 flex items-center gap-3">
-                   <div className="w-2.5 h-2.5 bg-blue-600 rounded-full shadow-[0_0_10px_rgba(37,99,235,0.4)]"></div>
-                   <h4 className="text-[11px] font-black text-slate-900 uppercase tracking-widest">01. Raw Material Indent (Weight Analysis)</h4>
-                </div>
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left border-collapse">
-                    <thead>
-                      <tr className="border-b border-slate-100 bg-white/50">
-                        <th className="px-10 py-4 text-[9px] font-black text-slate-400 uppercase tracking-widest">Item / Material</th>
-                        <th className="px-10 py-4 text-[9px] font-black text-slate-400 uppercase tracking-widest">Specification</th>
-                        <th className="px-10 py-4 text-[9px] font-black text-slate-400 uppercase tracking-widest text-right">Weight (KG)</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-100">
-                      {rawMaterials.map((m, i) => (
-                        <tr key={i} className="group hover:bg-slate-50/80 transition-all duration-200">
-                          <td className="px-10 py-6">
-                            <div className="font-black text-slate-800 uppercase text-sm group-hover:text-blue-600 transition-colors">{m.item}</div>
-                          </td>
-                          <td className="px-10 py-6">
-                            <span className="text-[10px] font-black text-slate-500 bg-white border border-slate-200 px-3 py-1.5 rounded-lg shadow-sm uppercase">{m.specification}</span>
-                          </td>
-                          <td className="px-10 py-6 text-right">
-                            <div className="font-black text-2xl tabular-nums text-slate-950">{m.totalWeightKg.toLocaleString(undefined, { maximumFractionDigits: 1 })}</div>
-                          </td>
-                        </tr>
+                <div className="p-12">
+                   <h4 className="text-[11px] font-black text-slate-400 uppercase tracking-[0.3em] mb-8 flex items-center gap-4">
+                     <span className="w-1.5 h-6 bg-blue-600 rounded-full"></span>
+                     Material Breakdown
+                   </h4>
+                   <div className="space-y-4">
+                      {calculationResult.indents.map((m, i) => (
+                        <div key={i} className="flex items-center justify-between p-6 bg-slate-50 rounded-3xl border-2 border-transparent hover:border-blue-100 hover:bg-white transition-all group">
+                           <div className="flex items-center gap-6">
+                              <div className={`w-14 h-14 rounded-2xl flex items-center justify-center font-black text-xl ${m.isAccessory ? 'bg-emerald-100 text-emerald-600' : 'bg-blue-100 text-blue-600'}`}>
+                                {m.isAccessory ? 'A' : 'M'}
+                              </div>
+                              <div>
+                                 <p className="text-sm font-black uppercase text-slate-950 group-hover:text-blue-600 transition-colors">{m.item}</p>
+                                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">{m.specification}</p>
+                              </div>
+                           </div>
+                           <div className="text-right">
+                              <p className="text-2xl font-black text-slate-900 tabular-nums">
+                                {m.isAccessory ? m.quantity.toLocaleString() : m.totalWeightKg.toLocaleString(undefined, { maximumFractionDigits: 1 })}
+                              </p>
+                              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{m.unit}</p>
+                           </div>
+                        </div>
                       ))}
-                    </tbody>
-                  </table>
+                   </div>
                 </div>
 
-                {accessories.length > 0 && (
-                  <>
-                    <div className="px-10 py-6 bg-slate-50 border-y border-slate-100 flex items-center gap-3 mt-4">
-                       <div className="w-2.5 h-2.5 bg-emerald-500 rounded-full shadow-[0_0_10px_rgba(16,185,129,0.4)]"></div>
-                       <h4 className="text-[11px] font-black text-slate-900 uppercase tracking-widest">02. Accessories Indent (Piece Count)</h4>
-                    </div>
-                    <div className="overflow-x-auto">
-                      <table className="w-full text-left border-collapse">
-                        <thead>
-                          <tr className="border-b border-slate-100 bg-white/50">
-                            <th className="px-10 py-4 text-[9px] font-black text-slate-400 uppercase tracking-widest">Bought-Out Item</th>
-                            <th className="px-10 py-4 text-[9px] font-black text-slate-400 uppercase tracking-widest">Spec</th>
-                            <th className="px-10 py-4 text-[9px] font-black text-slate-400 uppercase tracking-widest text-right">Quantity (NOS)</th>
-                          </tr>
-                        </thead>
-                        <tbody className="divide-y divide-slate-100">
-                          {accessories.map((a, i) => (
-                            <tr key={i} className="hover:bg-emerald-50/40 transition-all duration-200">
-                              <td className="px-10 py-6">
-                                <div className="font-black text-slate-800 uppercase text-sm">{a.item}</div>
-                              </td>
-                              <td className="px-10 py-6">
-                                <span className="text-[10px] font-black text-slate-500 bg-white border border-slate-200 px-3 py-1.5 rounded-lg uppercase">{a.specification}</span>
-                              </td>
-                              <td className="px-10 py-6 text-right">
-                                <div className="inline-block px-5 py-2.5 bg-slate-950 text-white rounded-2xl shadow-xl">
-                                  <div className="text-2xl font-black tabular-nums">{a.quantity.toLocaleString()}</div>
-                                </div>
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  </>
-                )}
-              </div>
-              <div className="p-10 bg-slate-950 border-t border-slate-800 flex items-center justify-between rounded-b-[3rem]">
-                 <p className="text-[10px] font-black text-slate-500 uppercase tracking-[0.4em] italic">Unit I - Production Portal - ADITYA EQUIPMENTS</p>
-                 <div className="flex gap-4">
-                    <div className="w-2 h-2 rounded-full bg-blue-500"></div>
-                    <div className="w-2 h-2 rounded-full bg-slate-700"></div>
-                    <div className="w-2 h-2 rounded-full bg-slate-700"></div>
-                 </div>
-              </div>
-           </div>
+                <div className="p-10 bg-slate-950 text-center rounded-b-[3rem]">
+                   <p className="text-[10px] font-black text-slate-600 uppercase tracking-[0.5em] italic">ADITYA EQUIPMENTS • UNIT I • MANUFACTURING PORTAL</p>
+                </div>
+             </div>
+          </div>
         </div>
       </main>
     </div>
