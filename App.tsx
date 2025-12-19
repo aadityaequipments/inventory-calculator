@@ -219,7 +219,6 @@ const App: React.FC = () => {
 
       <main className="max-w-7xl mx-auto px-6 py-10 grid grid-cols-1 lg:grid-cols-12 gap-10">
         <div className="lg:col-span-4 space-y-8 print-hidden">
-          {/* 01. Material Selection */}
           <section className="bg-white rounded-[2rem] shadow-xl border border-slate-200 overflow-hidden">
             <div className="p-6 bg-slate-50 border-b border-slate-100">
               <h2 className="font-black text-slate-900 text-[11px] uppercase tracking-widest">01. Material Selection</h2>
@@ -239,7 +238,6 @@ const App: React.FC = () => {
             </div>
           </section>
 
-          {/* 02. Configuration */}
           <section className="bg-white rounded-[2rem] shadow-xl border border-slate-200 overflow-hidden">
             <div className="p-6 bg-slate-50 border-b border-slate-100">
               <h2 className="font-black text-slate-900 text-[11px] uppercase tracking-widest">02. Dimension & Specs</h2>
@@ -254,7 +252,6 @@ const App: React.FC = () => {
               </div>
 
               <div className="space-y-6 pt-4 border-t border-slate-100">
-                {/* CUPLOCK CONFIG */}
                 {selectedProduct === ProductType.CUPLOCK && (
                   <div className="space-y-6">
                     <div className="space-y-4">
@@ -264,21 +261,13 @@ const App: React.FC = () => {
                         <button onClick={() => setCupType('Ledger')} className={`flex-1 py-3 text-[10px] font-black rounded-lg ${cupType === 'Ledger' ? 'bg-slate-950 text-white shadow-md' : 'text-slate-500'}`}>LEDGER (LASER)</button>
                       </div>
                     </div>
-
                     <div className="space-y-4">
                       <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Custom Size (Meters)</label>
                       <div className="relative">
-                         <input 
-                          type="number" 
-                          step="0.001" 
-                          value={cupLen} 
-                          onChange={(e) => setCupLen(Number(e.target.value))} 
-                          className="w-full pl-6 pr-12 py-4 bg-slate-50 border-2 border-slate-100 rounded-2xl text-xl font-black outline-none focus:border-blue-500" 
-                        />
+                         <input type="number" step="0.001" value={cupLen} onChange={(e) => setCupLen(Number(e.target.value))} className="w-full pl-6 pr-12 py-4 bg-slate-50 border-2 border-slate-100 rounded-2xl text-xl font-black outline-none focus:border-blue-500" />
                         <span className="absolute right-6 top-1/2 -translate-y-1/2 text-slate-400 text-xs font-black uppercase">MTR</span>
                       </div>
                     </div>
-
                     <div className="space-y-4">
                       <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Pipe Thickness</label>
                       <div className="flex bg-slate-100 p-1.5 rounded-xl">
@@ -289,7 +278,6 @@ const App: React.FC = () => {
                   </div>
                 )}
 
-                {/* CENTERING PLATE CONFIG */}
                 {selectedProduct === ProductType.PLATE && (
                   <div className="space-y-6">
                     <div className="space-y-4">
@@ -311,12 +299,10 @@ const App: React.FC = () => {
                         ))}
                       </div>
                     </div>
-
                     <div className="flex bg-slate-100 p-1.5 rounded-xl mb-4">
                       <button onClick={() => setDimensionUnit('mm')} className={`flex-1 py-2 text-[10px] font-black rounded-lg ${dimensionUnit === 'mm' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500'}`}>MM</button>
                       <button onClick={() => setDimensionUnit('feet')} className={`flex-1 py-2 text-[10px] font-black rounded-lg ${dimensionUnit === 'feet' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500'}`}>FEET</button>
                     </div>
-
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-1">
                         <label className="text-[9px] font-black text-slate-400 uppercase">Length</label>
@@ -327,7 +313,6 @@ const App: React.FC = () => {
                         <input type="number" step="any" value={plateB} onChange={(e) => setPlateB(Number(e.target.value))} className="w-full px-4 py-3 bg-slate-50 border-2 border-slate-100 rounded-xl text-xs font-black outline-none focus:border-blue-500" />
                       </div>
                     </div>
-
                     <div className="space-y-4">
                       <div className="space-y-1">
                         <label className="text-[9px] font-black text-slate-400 uppercase">Angle Size</label>
@@ -351,7 +336,6 @@ const App: React.FC = () => {
                   </div>
                 )}
 
-                {/* ADJUSTABLE PROP CONFIG */}
                 {selectedProduct === ProductType.PROP && (
                   <div className="space-y-6">
                     <div className="grid grid-cols-2 gap-4">
@@ -375,7 +359,6 @@ const App: React.FC = () => {
                   </div>
                 )}
 
-                {/* JACKS CONFIG */}
                 {selectedProduct === ProductType.JACK && (
                   <div className="space-y-6">
                     <div className="space-y-4">
@@ -385,7 +368,6 @@ const App: React.FC = () => {
                         <button onClick={() => setJackType('U-Jack')} className={`flex-1 py-3 text-[10px] font-black rounded-lg ${jackType === 'U-Jack' ? 'bg-slate-950 text-white shadow-md' : 'text-slate-500'}`}>U-JACK</button>
                       </div>
                     </div>
-
                     <div className="space-y-4">
                       <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Rod Specifications</label>
                       <div className="grid grid-cols-3 gap-2">
@@ -394,23 +376,16 @@ const App: React.FC = () => {
                         ))}
                       </div>
                     </div>
-
                     <div className="space-y-4">
                       <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Custom Rod Length</label>
                       <div className="relative">
-                        <input 
-                          type="number" 
-                          value={jackRodLen} 
-                          onChange={(e) => setJackRodLen(Number(e.target.value))} 
-                          className="w-full pl-6 pr-12 py-4 bg-slate-50 border-2 border-slate-100 rounded-2xl text-xl font-black outline-none focus:border-blue-500" 
-                        />
+                        <input type="number" value={jackRodLen} onChange={(e) => setJackRodLen(Number(e.target.value))} className="w-full pl-6 pr-12 py-4 bg-slate-50 border-2 border-slate-100 rounded-2xl text-xl font-black outline-none focus:border-blue-500" />
                         <span className="absolute right-6 top-1/2 -translate-y-1/2 text-slate-400 text-xs font-black uppercase">INCH</span>
                       </div>
                     </div>
                   </div>
                 )}
 
-                {/* TELESCOPIC SPAN CONFIG */}
                 {selectedProduct === ProductType.SPAN && (
                   <div className="space-y-6">
                     <p className="text-[11px] font-bold text-slate-500 uppercase leading-relaxed italic border-l-4 border-blue-500 pl-4 bg-blue-50 p-4 rounded-xl">
@@ -432,8 +407,8 @@ const App: React.FC = () => {
         </div>
 
         {/* Indent Display Card */}
-        <div className="lg:col-span-8">
-           <div id="indent-card" className="bg-white rounded-[3rem] shadow-2xl border border-slate-200/50 flex flex-col min-h-full overflow-hidden">
+        <div className="lg:col-span-8 flex flex-col items-stretch">
+           <div id="indent-card" className="bg-white rounded-[3rem] shadow-2xl border border-slate-200/50 flex flex-col flex-grow overflow-hidden">
               <div className="p-10 border-b border-slate-100 bg-slate-50/30 flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
                 <div>
                    <span className="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-[9px] font-black uppercase tracking-widest rounded-full mb-3 border border-blue-200">Production Ready Indent</span>
